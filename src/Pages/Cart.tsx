@@ -64,7 +64,7 @@ const Cart = () => {
           <p className="text-gray-500 mt-1 mb-4">Add some products to your cart to see them here</p>
           <button
             onClick={() => navigate("/products")}
-            className="px-6 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/30"
+            className="px-6 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-800 text-white shadow-lg shadow-cyan-500/30"
           >
             Browse Products
           </button>
@@ -141,14 +141,14 @@ const Cart = () => {
                 <div className="flex items-center gap-3 mt-2">
                   <button
                     onClick={() => updateQty(item.id, -1)}
-                    className="bg-[#0d2236] text-white rounded-full p-2 border border-cyan-500/20"
+                    className="bg-[#0d2236] hover:bg-blue-500 text-white rounded-full p-2 border border-cyan-500/20"
                   >
                     <Minus size={18} />
                   </button>
                   <span className="text-white">{item.quantity}</span>
                   <button
                     onClick={() => updateQty(item.id, 1)}
-                    className="bg-[#0d2236] text-white rounded-full p-2 border border-cyan-500/20"
+                    className="bg-[#0d2236] hover:bg-blue-500 text-white rounded-full p-2 border border-cyan-500/20"
                   >
                     <Plus size={18} />
                   </button>
@@ -186,7 +186,7 @@ const Cart = () => {
 
           <button
             onClick={() => navigate("/checkout")}
-            className="w-full mt-4 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-xl text-lg shadow-lg shadow-blue-500/40 hover:-translate-y-1 transition"
+            className="w-full mt-4 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-slate-950 rounded-xl text-lg shadow-lg shadow-blue-500/40 hover:-translate-y-1 transition"
           >
             Proceed to Checkout
           </button>

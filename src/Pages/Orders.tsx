@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Card } from "@/Components/ui/card";
-import { Search, Eye } from "lucide-react";
+import { Search, Eye, Truck, Package, Clock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const ORDER_TABS = [
-  { key: "Contract", label: "Contract Orders" },
-  { key: "Secondary", label: "Secondary Orders" },
-  { key: "Dispatched", label: "Dispatched Orders" },
+  { img : Package, key: "Contract", label: "Contract Orders" },
+  { img : Clock, key: "Secondary", label: "Secondary Orders" },
+  { img : Truck, key: "Dispatched", label: "Dispatched Orders" },
 ];
 
 interface OrderRecord {
@@ -17,7 +17,8 @@ interface OrderRecord {
   EffectiveDate: string;
   TotalAmount: number;
   Status: string;
-  RecordType: { DeveloperName: string };
+  RecordType: { Id: string };
+  // new fields (we select all, but only display few)
 }
 
 const Orders = () => {
@@ -25,8 +26,21 @@ const Orders = () => {
   const [orders, setOrders] = useState<OrderRecord[]>([]);
   const [filtered, setFiltered] = useState<OrderRecord[]>([]);
   const [search, setSearch] = useState("");
+
   const [token, setToken] = useState<string | null>(null);
   const navigate = useNavigate();
+
+  // Record types
+  const RT_Contract = "012fj000003uHm1AAE";
+  const RT_Secondary = "012fj000003uEY3AAM";
+  const RT_Dispatched = "012fj000003uHpFAAU";
+
+  const activeRecordTypeId = () => {
+    if (activeTab === "Contract") return RT_Contract;
+    if (activeTab === "Secondary") return RT_Secondary;
+    if (activeTab === "Dispatched") return RT_Dispatched;
+    return "";
+  }
 
   // -------------------------------
   // 1) Get Salesforce Access Token
@@ -34,8 +48,14 @@ const Orders = () => {
   const getAccessToken = async () => {
     const params = new URLSearchParams();
     params.append("grant_type", "client_credentials");
-    params.append("client_id", "3MVG9HtWXcDGV.nEjGlOSARSUWdhaRh3M.MZMxCFek1KeKIjSU61s7elcUSSScL4Jfk.rh.ji7og4gPabrfSA");
-    params.append("client_secret", "3E5E44662F5C43535B785D740B237868AA86DFC6AC4709037876F6223B419354");
+    params.append(
+      "client_id",
+      "3MVG9HtWXcDGV.nEjGlOSARSUWdhaRh3M.MZMxCFek1KeKIjSU61s7elcUSSScL4Jfk.rh.ji7og4gPabrfSA"
+    );
+    params.append(
+      "client_secret",
+      "3E5E44662F5C43535B785D740B237868AA86DFC6AC4709037876F6223B419354"
+    );
 
     try {
       const res = await axios.post(
@@ -53,16 +73,23 @@ const Orders = () => {
   };
 
   // -------------------------------
-  // 2) Fetch Orders by Record Type
+  // 2) Fetch ALL required fields
   // -------------------------------
+  const FULL_ORDER_FIELDS = `
+    Id, OrderNumber, Account.Name, AccountId,
+    EffectiveDate, EndDate, Status,
+    TotalAmount, Pricebook2Id, Type,
+    PoNumber, PoDate, Description,
+    BillingAddress, ShippingAddress,
+    CompanyAuthorizedById, CustomerAuthorizedById,
+    RecordType.Id
+  `;
+
   const fetchOrders = async (accessToken: string) => {
     const query = `
-      SELECT 
-        Id, OrderNumber, EffectiveDate, TotalAmount, Status,
-        Account.Name,
-        RecordType.DeveloperName
+      SELECT ${FULL_ORDER_FIELDS}
       FROM Order
-      WHERE RecordType.DeveloperName IN ('Contract','Secondary','Dispatched')
+      WHERE RecordType.Id IN ('${RT_Contract}', '${RT_Secondary}', '${RT_Dispatched}')
       ORDER BY CreatedDate DESC
     `;
 
@@ -72,6 +99,8 @@ const Orders = () => {
       )}`,
       { headers: { Authorization: `Bearer ${accessToken}` } }
     );
+    console.log(res.data);
+    
 
     setOrders(res.data.records);
   };
@@ -86,15 +115,16 @@ const Orders = () => {
   }, []);
 
   // -------------------------------
-  // 3) Filter Orders by tab + search
+  // 3) Filter based on tab + search
   // -------------------------------
   useEffect(() => {
-    let data = orders.filter((o) => o.RecordType.DeveloperName === activeTab);
+    let data = orders.filter((o) => o.RecordType.Id === activeRecordTypeId());
 
     if (search.trim()) {
-      data = data.filter((o) =>
-        o.OrderNumber.toLowerCase().includes(search.toLowerCase()) ||
-        o.Account?.Name?.toLowerCase().includes(search.toLowerCase())
+      data = data.filter(
+        (o) =>
+          o.OrderNumber.toLowerCase().includes(search.toLowerCase()) ||
+          o.Account?.Name?.toLowerCase().includes(search.toLowerCase())
       );
     }
 
@@ -108,39 +138,57 @@ const Orders = () => {
     const colors: any = {
       Draft: "bg-yellow-600/30 text-yellow-300",
       Pending: "bg-yellow-600/30 text-yellow-300",
-      Processing: "bg-blue-600/30 text-blue-300",
       Activated: "bg-green-600/30 text-green-300",
+      Processing: "bg-blue-600/30 text-blue-300",
       Completed: "bg-green-600/30 text-green-300",
     };
 
     return (
-      <span className={`px-3 py-1 rounded-full text-xs font-medium ${colors[status] || "bg-gray-700 text-gray-300"}`}>
+      <span
+        className={`px-3 py-1 rounded-full text-xs font-medium ${
+          colors[status] || "bg-gray-700 text-gray-300"
+        }`}
+      >
         {status}
       </span>
     );
   };
 
+  // -------------------------------
+  // COUNTS for tabs
+  // -------------------------------
+  const countContract = orders.filter((o) => o.RecordType.Id === RT_Contract).length;
+  const countSecondary = orders.filter((o) => o.RecordType.Id === RT_Secondary).length;
+  const countDispatched = orders.filter((o) => o.RecordType.Id === RT_Dispatched).length;
+
+  const getCount = (type: string) => {
+    if (type === "Contract") return countContract;
+    if (type === "Secondary") return countSecondary;
+    if (type === "Dispatched") return countDispatched;
+    return 0;
+  };
+
   return (
-    <div className="space-y-8">
-      {/* Page Title */}
+    <div className="space-y-8 ml-5 mr-2 mt-5 pb-10 overflow-x-hidden">
+      {/* Title */}
       <h1 className="text-3xl font-bold text-cyan-400">Orders</h1>
       <p className="text-gray-400 -mt-2">Manage all your distribution orders</p>
 
-      {/* TAB SWITCH */}
+      {/* TABS */}
       <div className="flex gap-3 flex-wrap">
         {ORDER_TABS.map((t) => (
           <button
             key={t.key}
             onClick={() => setActiveTab(t.key)}
-            className={`px-5 py-2 rounded-xl text-sm font-bold border 
+            className={`flex px-6 py-3 rounded-xl text-sm font-medium border transition-all duration-300
               ${
                 activeTab === t.key
-                  ? "bg-gradient-to-r from-[#0CD5FB] via-[#359AE8] to-[#6B54D6] border-cyan-400 text-black shadow-[0_0_15px_rgba(0,255,255,0.3)] hover:translate-y-[-4px] hover:shadow-[0px_0px_25px_rgba(0,200,255,0.8)]"
-                  : "bg-[#0d1625] border-cyan-500/10 text-gray-300 hover:text-white hover:border-cyan-400 hover:shadow-[0_0_10px_rgba(0,255,255,0.1)] hover:translate-y-[-2px] transition-all duration-200"
+                  ? "bg-gradient-to-r from-[#0CD5FB] via-[#359AE8] to-[#6B54D6] text-black border-cyan-400 shadow-[0_0_20px_rgba(0,255,255,0.4)] hover:-translate-y-1"
+                  : "bg-[#0d1625] border-cyan-500/10 text-gray-300 hover:border-cyan-400 hover:text-white hover:-translate-y-1"
               }
             `}
           >
-            {t.label}
+            {t.img && <t.img size={18} className=" mr-2 align-center" />} {t.label} ({getCount(t.key)})
           </button>
         ))}
       </div>
@@ -156,15 +204,15 @@ const Orders = () => {
         />
       </div>
 
-      {/* ORDERS TABLE */}
-      <Card className="bg-[#071018] border border-cyan-500/20 rounded-2xl shadow-xl overflow-auto">
-        <table className="w-full text-left min-w-[700px]">
+      {/* TABLE */}
+      <Card className="bg-slate-950 border border-cyan-500/20 rounded-2xl shadow-xl overflow-auto">
+        <table className="w-full text-left min-w-[800px]">
           <thead>
             <tr className="text-gray-400 text-sm border-b border-cyan-500/10">
-              <th className="p-4">Order ID</th>
+              <th className="p-4">Order Number</th>
               <th className="p-4">Customer</th>
-              <th className="p-4">Date</th>
-              <th className="p-4">Total</th>
+              <th className="p-4">Order Date</th>
+              <th className="p-4">Total Amount</th>
               <th className="p-4">Status</th>
               <th className="p-4 text-center">Action</th>
             </tr>
@@ -176,8 +224,10 @@ const Orders = () => {
                 key={o.Id}
                 className="text-gray-300 border-b border-[#0f1f38] hover:bg-[#0d1625] transition"
               >
-                <td className="p-4 text-cyan-300 cursor-pointer"
-                    onClick={() => navigate(`/orders/${o.Id}`)}>
+                <td
+                  className="p-4 text-cyan-300 cursor-pointer"
+                  onClick={() => navigate(`/orders/${o.Id}`)}
+                >
                   {o.OrderNumber}
                 </td>
 
@@ -185,8 +235,8 @@ const Orders = () => {
 
                 <td className="p-4">{o.EffectiveDate}</td>
 
-                <td className="p-4 font-semibold text-cyan-300">
-                  ₹{o.TotalAmount?.toLocaleString()}
+                <td className="p-4 text-cyan-300 font-semibold">
+                  ₹{o.TotalAmount?.toLocaleString() || "0"}
                 </td>
 
                 <td className="p-4">
@@ -195,7 +245,8 @@ const Orders = () => {
 
                 <td className="p-4 text-center">
                   <Eye
-                    className="text-cyan-300 cursor-pointer hover:scale-125 transition"
+                    size={22}
+                    className="text-cyan-300 mx-auto cursor-pointer hover:scale-125 transition"
                     onClick={() => navigate(`/orders/${o.Id}`)}
                   />
                 </td>

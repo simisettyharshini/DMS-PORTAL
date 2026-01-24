@@ -215,7 +215,7 @@ const Checkout = () => {
               disabled={isPlacing}
               className="
               w-full h-12 text-lg font-semibold
-              bg-gradient-to-r from-cyan-400 to-blue-600
+              bg-gradient-to-r from-cyan-400 to-purple-600
               hover:shadow-[0_0_25px_rgba(0,200,255,0.8)]
               transition-all"
             >

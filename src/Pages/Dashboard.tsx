@@ -62,7 +62,7 @@ const categoryData = [
             </div>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl font-bold text-white -mt-2 -ml-22">
+          <h2 className="text-2xl sm:text-3xl font-bold text-white">
             ₹24,56,890
           </h2>
 
@@ -84,7 +84,7 @@ const categoryData = [
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-white -mt-2 -ml-42">
+          <h2 className="text-3xl font-bold text-white">
             1,247
           </h2>
 
@@ -108,7 +108,7 @@ const categoryData = [
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-white -ml-41 -mt-4">
+          <h2 className="text-3xl font-bold text-white">
             3,842
           </h2>
 
@@ -130,7 +130,7 @@ const categoryData = [
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-white -ml-48 -mt-4">
+          <h2 className="text-3xl font-bold text-white">
             428
           </h2>
 
