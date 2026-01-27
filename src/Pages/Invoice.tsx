@@ -199,7 +199,7 @@ const formatToLakhs = (amount = 0) => {
 
 
   return (
-    <div className="min-h-screen bg-[#020817] p-4 sm:p-6 lg:p-8 text-white">
+    <div className="min-h-screen bg-[#020817] p-4 sm:p-6 lg:p-8 text-white h-full overflow-y-auto">
 
       {/* ===== PAGE HEADER ===== */}
       <div className="mb-6">
@@ -398,8 +398,8 @@ shadow-[0_0_30px_rgba(34,211,238,0.25)]">
           </div>
 
           <div className="text-right ">
-            <p className="text-xs text-gray-400 mr-13">Customer</p>
-            <p className="text-white font-semibold text-start ml-14">
+            <p className="text-xs text-gray-400 mr-12">Customer</p>
+            <p className="text-white font-semibold text-start ml-10">
               {invoice.Customer__r.Name}
             </p>
           </div>
@@ -431,8 +431,8 @@ shadow-[0_0_30px_rgba(34,211,238,0.25)]">
             </p>
           </div>
 
-          <div className="justify-self-end mr-13">
-            <p className="text-xs text-gray-400 ">Status</p>
+          <div className="justify-self-end mr-9">
+            <p className="text-xs text-gray-400 ml-2">Status</p>
             <p className="text-white font-semibold mt-1 text-start">
               <StatusBadge  status={invoice.Status__c} />
             </p>
