@@ -1,5 +1,3 @@
-
- 
 import { Button } from "../Components/ui/button"
 import { LuPackage } from "react-icons/lu"
 import { FaRegEye } from "react-icons/fa6";
@@ -43,7 +41,8 @@ const Login=()=> {
     shadow-[0_0_20px_rgba(56,189,248,0.25),inset_0_0_16px_rgba(56,189,248,0.15)]
   "/>
      
-      <CardHeader className="flex flex-col items-center text-center space-y-1 relative transform -translate-y-6">
+      <CardHeader className="flex flex-col items-center text-center space-y-1 relative max-sm:translate-y-0 sm:-translate-y-6
+">
         <div
           className="
             w-16 h-16
