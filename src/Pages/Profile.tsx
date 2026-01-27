@@ -128,7 +128,7 @@ const fetchPersonAccountSetails= async (token :string)=>{
   }, []);
 
   return (
-    <div className="w-full min-h-screen bg-[#020817] px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+    <div className="w-full min-h-screen bg-[#020817] px-4 sm:px-6 lg:px-8 py-4 sm:py-6 h-full overflow-y-auto">
 
       {/* ================= HEADER ================= */}
       <div className="flex justify-between items-start mb-6">
