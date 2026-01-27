@@ -37,9 +37,9 @@ Warehouse__c:string;
 
 export default function GRN() {
 
-   const [grnDetails, setGrnDetails] = useState<GRNRecord[]>([]);
-   const [accessToken, setAccessToken] = useState<string | null>(null);
-   const [error, setError] = useState<string | null>(null);
+  const [grnDetails, setGrnDetails] = useState<GRNRecord[]>([]);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -158,7 +158,7 @@ const grnStats = useMemo(() => {
 
 
   return (
-    <div className="min-h-screen bg-[#020817] p-4 sm:p-6 lg:p-8 text-white">
+    <div className="min-h-screen bg-[#020817] p-4 sm:p-6 lg:p-8 text-white h-full overflow-y-auto">
 
       {/* ===== HEADER ===== */}
       <div className="mb-6">
@@ -296,7 +296,7 @@ const grnStats = useMemo(() => {
         <div className="bg-[#02061] rounded-xl p-3
           flex flex-col sm:flex-row sm:justify-between gap-8">
           <p className="-ml-3">{grn.Product__r?.Name}</p>
-          <p className="text-sm text-gray-400 ">
+          <p className="text-sm text-gray-400 -ml-3">
             Ordered: {grn.Ordered__c}{" "}
             <span className="text-cyan-400 mr-2 ml-2">
               Received: {grn.Recieved__c}
