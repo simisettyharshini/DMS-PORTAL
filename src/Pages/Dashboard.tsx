@@ -34,7 +34,7 @@ const categoryData = [
   { name: "Others", value: 15, color: "#f59e0b" },
 ];
   return (
-    <div className=" bg-[#020817] p-4 sm:p-6 lg:p-8 overflow-x-hidden">
+    <div className=" bg-[#020817] p-4 sm:p-6 lg:p-8 overflow-x-hidden h-full">
 
 
       {/* Header */}
