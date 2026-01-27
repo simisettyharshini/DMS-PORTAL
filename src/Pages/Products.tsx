@@ -207,7 +207,7 @@ const ProductCatalog = () => {
     );
 
   return (
-    <div className="space-y-6 pb-10 ml-5 mt-5 mr-2 overflow-x-hidden">
+    <div className="space-y-6 pb-10 ml-5 mt-5 mr-2 h-screen w-full overflow-y-scroll bg-[#020817] text-white scrollbar-thin scrollbar-thumb-cyan-400 scrollbar-track-transparent">
       {/* TITLE */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mt-4 gap-4">
         <div>

@@ -134,7 +134,7 @@ const OrderDetails = () => {
   `;
 
   return (
-    <div className=" ml-5 mr-2 min-h-screen bg-[#020817] px-2 py-4 sm:py-6 space-y-6">
+    <div className=" ml-5 mr-2 h-screen w-full overflow-y-scroll bg-[#020817] text-white scrollbar-thin scrollbar-thumb-cyan-400 scrollbar-track-transparent">
       {/* HEADER */}
       <div
         className="
