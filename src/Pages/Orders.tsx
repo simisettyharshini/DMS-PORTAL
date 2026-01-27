@@ -171,7 +171,7 @@ const Orders = () => {
   };
 
   return (
-    <div className="space-y-8 ml-5 mr-2 mt-5 pb-10 overflow-x-hidden">
+    <div className="space-y-8 ml-5 mr-2 mt-5 pb-10 h-screen w-full overflow-y-scroll bg-[#020817] text-white scrollbar-thin scrollbar-thumb-cyan-400 scrollbar-track-transparent">
       {/* Title */}
       <h1 className="text-3xl font-bold text-cyan-400">Orders</h1>
       <p className="text-gray-400 -mt-2">Manage all your distribution orders</p>
@@ -214,15 +214,15 @@ const Orders = () => {
       </div>
 
       {/* TABLE */}
-      <Card className="bg-slate-950 border border-cyan-500/20 rounded-2xl shadow-xl overflow-auto">
-        <table className="w-full text-left min-w-[800px]">
-          <thead>
+      <Card className="bg-slate-950 border border-cyan-500/20 rounded-2xl shadow-xl overflow-hidden">
+        <table className="w-full text-left">
+          <thead className=" sm:table-header-group">
             <tr className="text-gray-400 text-sm border-b border-cyan-500/10">
               <th className="p-4">Order Number</th>
               <th className="p-4">Customer</th>
-              <th className="p-4">Order Date</th>
-              <th className="p-4">Total Amount</th>
-              <th className="p-4">Status</th>
+              <th className="p-4 sm:table-cell hidden">Order Date</th>
+              <th className="p-4 sm:table-cell hidden">Total Amount</th>
+              <th className="p-4 sm:table-cell hidden">Status</th>
               <th className="p-4 text-center">Action</th>
             </tr>
           </thead>
@@ -233,6 +233,7 @@ const Orders = () => {
                 key={o.Id}
                 className="text-gray-300 border-b border-[#0f1f38] hover:bg-[#0d1625] transition"
               >
+                {/* Order Number */}
                 <td
                   className="p-4 text-cyan-300 cursor-pointer"
                   onClick={() => navigate(`/orders/${o.Id}`)}
@@ -240,18 +241,23 @@ const Orders = () => {
                   {o.OrderNumber}
                 </td>
 
+                {/* Customer */}
                 <td className="p-4">{o.Account?.Name}</td>
 
-                <td className="p-4">{o.EffectiveDate}</td>
+                {/* Order Date (hide on mobile) */}
+                <td className="p-4 hidden sm:table-cell">{o.EffectiveDate}</td>
 
-                <td className="p-4 text-cyan-300 font-semibold">
+                {/* Amount (hide on mobile) */}
+                <td className="p-4 text-cyan-300 font-semibold hidden sm:table-cell">
                   ₹{o.TotalAmount?.toLocaleString() || "0"}
                 </td>
 
-                <td className="p-4">
+                {/* Status (hide on mobile) */}
+                <td className="p-4 hidden sm:table-cell">
                   <StatusBadge status={o.Status} />
                 </td>
 
+                {/* Action */}
                 <td className="p-4 text-center">
                   <Eye
                     size={22}

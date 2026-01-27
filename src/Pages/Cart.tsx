@@ -62,7 +62,7 @@ const Cart = () => {
   // EMPTY CART UI
   if (cartItems.length === 0) {
     return (
-      <div className="p-6">
+      <div className="p-6 h-screen w-full overflow-y-scroll bg-[#020817] text-white scrollbar-thin scrollbar-thumb-cyan-400 scrollbar-track-transparent">
         <div className="flex justify-between p-5 space-y-6 relative align-center">
           <div>
             <p
@@ -80,8 +80,9 @@ const Cart = () => {
             </p>
           </div>
 
-          <div className="font-bold flex items-center gap-2 px-4 py-1 h-8 rounded-full bg-purple-600 text-white text-sm shadow-md">
-            <ShoppingCart size={16} className="text-white" />0 items
+          <div className="font-bold h-fit flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500 text-white text-sm shadow-md whitespace-nowrap">
+            <ShoppingCart size={16} className="text-white" />
+            <span>0 items</span>
           </div>
         </div>
 
@@ -121,7 +122,7 @@ const Cart = () => {
 
   // MAIN CART
   return (
-    <div className="p-6 space-y-6 relative">
+    <div className="p-6 space-y-6 relative h-screen w-full overflow-y-scroll bg-[#020817] text-white scrollbar-thin scrollbar-thumb-cyan-400 scrollbar-track-transparent">
       <div className="p-6 space-y-6 relative">
         {/* BACK BUTTON */}
         <p

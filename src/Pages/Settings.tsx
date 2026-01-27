@@ -44,7 +44,7 @@ export default function Settings() {
   const [timeoutValue, setTimeoutValue] = useState("30");
 
   return (
-    <div className="space-y-10 pb-20 ml-5 mr-2 mt-5 overflow-x-auto">
+    <div className="space-y-10 pb-20 ml-5 mr-2 mt-5 h-screen w-full overflow-y-scroll bg-[#020817] text-white scrollbar-thin scrollbar-thumb-cyan-400 scrollbar-track-transparent">
       {/* PAGE HEADER */}
       <div>
         <h1 className="text-4xl font-bold text-cyan-300 tracking-wide">
@@ -146,7 +146,7 @@ export default function Settings() {
 
       {/* APPEARANCE */}
       <Section>
-        <CardHeader className="flex flex-row items-center gap-3 pb-4">
+        <CardHeader className="flex items-center gap-3 pb-4">
           <div className="p-3 bg-[#0e2030] text-cyan-300 rounded-xl shadow-inner">
             <Monitor size={22} />
           </div>
@@ -156,14 +156,16 @@ export default function Settings() {
         </CardHeader>
 
         <CardContent className="text-gray-300 space-y-4">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
               <p className="text-white font-medium">Theme</p>
               <p className="text-gray-500 text-sm">
                 Choose your preferred theme
               </p>
             </div>
-            <div className="flex gap-4 mt-3">
+
+            {/* Buttons stack on mobile */}
+            <div className="flex gap-3 flex-wrap sm:flex-nowrap">
               <ThemeButton
                 label={<Sun className="w-4 h-4" />}
                 theme={theme}
@@ -171,6 +173,7 @@ export default function Settings() {
               >
                 Light
               </ThemeButton>
+
               <ThemeButton
                 label={<Moon className="w-4 h-4" />}
                 theme={theme}
@@ -178,6 +181,7 @@ export default function Settings() {
               >
                 Dark
               </ThemeButton>
+
               <ThemeButton
                 label={<Laptop className="w-4 h-4" />}
                 theme={theme}
@@ -185,7 +189,7 @@ export default function Settings() {
               >
                 System
               </ThemeButton>
-            </div>{" "}
+            </div>
           </div>
         </CardContent>
       </Section>
